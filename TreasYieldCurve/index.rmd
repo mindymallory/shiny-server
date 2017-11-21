@@ -64,3 +64,5 @@ US treasury yield data come from [www.treasury.gov](https://www.treasury.gov/res
 
 Back to [mindymallory.com](http://www.mindymallory.com)
 
+Source code available at [github.com/mindymallory/shiny-server](https://github.com/mindymallory/shiny-server)
+
