@@ -1,0 +1,63 @@
+---
+title: "US Treasury Yield Curve"
+runtime: shiny
+output: 
+  html_document: 
+    code_folding: none
+    theme: flatly
+    toc: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE , warning = FALSE, message = FALSE)
+
+
+library(shiny)
+library(ggplot2)
+library(quantmod)
+library(xts)
+library(lubridate)
+library(ArgumentCheck)
+library(ustyc) 
+library(officer)
+library(ggiraph)
+library(tidyr)
+
+Today <- Sys.Date()
+mo <- as.integer(month(Today))
+Year <- as.numeric(year(Today))
+
+```
+
+Today's US treasury yield curve versus snapshots of the curve in the previous four months. 
+
+```{r treas, echo=FALSE, warning=FALSE, message=FALSE}
+# For Treasury Yields
+
+t <-getYieldCurve(year = Year)
+i <- dim(t$df)[1]
+rows <- c(i, i-20, i-2*20, i-3*20)
+t <- t$df[rows,]
+t <- as.data.frame(cbind(colnames(t), t(t)))
+t <- t[1:(dim(t)[1]-1),]
+DATE <- colnames(t)[2:5]
+colnames(t)[colnames(t) == 'V1'] <- 'Maturity'
+
+t$Maturity <- substr(t$Maturity, 4, 100)
+t <- gather_(t, "Date", "Yield", colnames(t[2:5]), factor_key=TRUE)
+t$Maturity <- factor(t$Maturity, levels = t$Maturity)
+t$Date <- factor(t$Date, levels = t$Date)
+t$Yield <- as.numeric(t$Yield)
+
+treas_plot <- ggplot(t, aes(x=Maturity, y=Yield, colour= Date, group = Date)) + 
+      geom_line(size = .75) +
+      expand_limits(y=c(min(t$Yield)-1, max(t$Yield)+1)) +
+      geom_point_interactive(aes(tooltip = Yield), size = 1) +
+      theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5),  axis.text.x  = element_text(angle=45)) + 
+              labs(x = "Maturities", y = "Yields", title = "US Treasury Yields")
+
+treas_plot
+
+```
+
+US treasury yield data come from [www.treasury.gov](https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield)
