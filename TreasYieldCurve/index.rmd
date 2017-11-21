@@ -17,7 +17,7 @@ library(ggplot2)
 library(quantmod)
 library(xts)
 library(lubridate)
-library(ArgumentCheck)
+#library(ArgumentCheck)
 library(ustyc) 
 library(officer)
 library(ggiraph)
@@ -45,8 +45,8 @@ colnames(t)[colnames(t) == 'V1'] <- 'Maturity'
 
 t$Maturity <- substr(t$Maturity, 4, 100)
 t <- gather_(t, "Date", "Yield", colnames(t[2:5]), factor_key=TRUE)
-t$Maturity <- factor(t$Maturity, levels = t$Maturity)
-t$Date <- factor(t$Date, levels = t$Date)
+t$Maturity <- factor(t$Maturity, levels = unique(t$Maturity))
+t$Date <- factor(t$Date, levels = unique(t$Date))
 t$Yield <- as.numeric(t$Yield)
 
 treas_plot <- ggplot(t, aes(x=Maturity, y=Yield, colour= Date, group = Date)) + 
