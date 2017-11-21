@@ -62,3 +62,5 @@ treas_plot
 
 US treasury yield data come from [www.treasury.gov](https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield)
 
+Back to [mindymallory.com](www.mindymallory.com)
+
