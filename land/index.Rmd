@@ -36,10 +36,6 @@ img(src='http://apps.mindymallory.com/shiny/www/forwardcurves.PNG')
 
 **US Treasury Yield Curve** 
 
-```{r, echo = FALSE}
-
-img(src='http://apps.mindymallory.com/shiny/www/treasyield.PNG')
-```
 
 <a href="http://apps.mindymallory.com/shiny/TreasYieldCurve/">
   <img src="http://apps.mindymallory.com/shiny/www/treasyield.PNG" alt="Treasury Yield Curve" style='height: 100%; width: 100%; object-fit: contain'/>
