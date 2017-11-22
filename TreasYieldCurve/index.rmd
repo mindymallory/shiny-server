@@ -68,7 +68,7 @@ US treasury yield data come from [www.treasury.gov](https://www.treasury.gov/res
 
 Copyright [Mindy Mallory](http://www.mindymallory.com) 2017
 
-More [Apps](http://apps.mindymallory.com/)
+More [Apps](http://apps.mindymallory.com/shiny/)
 
 
 Column {.tabset}

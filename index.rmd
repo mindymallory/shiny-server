@@ -1,0 +1,46 @@
+---
+title: "Web Applications by Mindy Mallory"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=200}
+-----------------------------------------------------------------------
+
+### Introduction
+
+This page contains links to the web applications I am working on. All were built as Shiny apps with R and RStudio. 
+
+Back to [MindyMallory.com](http://mindymallory.com)
+
+Column 
+-----------------------------------------------------------------------
+
+### 
+
+Current forward curves for corn, soybeans, wheat, and crude oil. 
+
+[![](forwardcurves.png)](http://apps.mindymallory.com/shiny/ForwardCurves/)
+
+
+### 
+
+Yesterdays’s US treasury yield curve versus snapshots of the curve in the previous three months. 
+
+[![](treasyield.png)](http://apps.mindymallory.com/shiny/TreasYieldCurve/)
+
+Column 
+-----------------------------------------------------------------------
+
+###
+
+
+###
+
