@@ -36,7 +36,7 @@ Current forward curves for corn, soybeans, wheat, and crude oil.
 Yesterdays’s US treasury yield curve versus snapshots of the curve in the previous three months. 
 
 ```{r, echo = FALSE}
-img(src='www/treasyield.png')
+img(src='http://apps.mindymallory.com/shiny/www/treasyield.png')
 ```
 
 [![](www/treasyield.png)](http://apps.mindymallory.com/shiny/TreasYieldCurve/)
