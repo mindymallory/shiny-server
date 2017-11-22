@@ -179,7 +179,7 @@ Column {data-width=200}
 
 Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/company/cbot.html) futures contracts; crude oil is a [New York Mercantile Exchange](http://www.cmegroup.com/company/nymex.html) futures contract. Price quotes are pulled from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted.  
 
-By [Mindy Mallory](http://www.mindymallory.com)
+Copyright [Mindy Mallory](http://www.mindymallory.com) 2017
 
 More [Apps](http://apps.mindymallory.com/)
 
