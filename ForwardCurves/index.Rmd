@@ -235,7 +235,10 @@ and here
 
 
 ```{r, echo = FALSE}
- renderggiraph({
+ 
+ggiraphOutput("soybeanplot")
+
+output$soybeanplot <- renderggiraph({
     ggiraph(code = print(s), s, pointsize = 10)
   })
   
