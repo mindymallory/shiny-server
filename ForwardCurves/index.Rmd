@@ -1,5 +1,5 @@
 ---
-title: "Forward Curves"
+title: "Commodity Futures Forward Curves"
 runtime: shiny
 output: 
   html_document: 
@@ -13,7 +13,7 @@ output:
 
 `r Sys.Date()` 
 
-All graphs are for futures contracts that trade on the [Chicago Mercantile Exchange](http://www.cmegroup.com/). Price quotes are from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted. 
+Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/company/cbot.html) futures contracts; crude oil is a [New York Mercantile Exchange](http://www.cmegroup.com/company/nymex.html) futures contract. Price quotes are pulled from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE , warning = FALSE, message = FALSE)
@@ -173,7 +173,7 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
       geom_line(size = .75) +
       expand_limits(y=c(min(soy_contract8$Price)-50, max(soy_contract8$Price)+50)) +
       geom_point_interactive(aes(tooltip = Label), size = 2) +
-      theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
+      theme_bw(base_size = 12) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
       labs(x = "Days to Expiration", y = "Price of Soybean in Cents per Bushel", title = "Soybean Forward Curve")
 
 
@@ -230,7 +230,7 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
 
 ```{r, echo = FALSE}
 renderggiraph({
-    ggiraph(code = print(s))
+    ggiraph(code = print(s),pointsize = 10,  width_svg = 5, height_svg = 5)
   })
   
   # output$SoyRetPlot <- renderggiraph({
