@@ -34,7 +34,6 @@ source("functions.R")
 ```{r introcompute, echo=FALSE}
 # Performs initial logic to build 8 nearest ticker symbols for display later
 
-
 Today <- Sys.Date()
 mo <- as.integer(month(Today))
 Year <- as.numeric(year(Today))
@@ -42,8 +41,6 @@ Year <- as.numeric(year(Today))
 MonthCode <- month_symbol(mo)
 Cm <- get_nearby_corn(MonthCode, Year)
 Sm <- get_nearby_soy(MonthCode, Year)
-
-
 
 corn_contract6 <- corn_forward6(Cm[[1]], Cm[[2]])
 corn_contract6 <- cbind(corn_contract6, "", "","","", "")
@@ -53,6 +50,8 @@ wheat_contract6 <- cbind(wheat_contract6, "", "","","", "")
 soy_contract8 <- soy_forward8(Sm[[1]], Sm[[2]])
 soy_contract8 <- cbind(soy_contract8, "", "","","", "")
 
+crude_contract12 <- crude_forward12(MonthCode, Year)
+crude_contract12 <- cbind(crude_contract12, "", "","","", "")
 codes <- c('F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z')
 
 # Fetch Corn Quotes
@@ -80,18 +79,25 @@ for (i in 1:8){
   soy_contract8[i, 4] <- as.numeric(getQuote(soy_contract8[i,3])[2])
   soy_contract8[i, 5] <- format(as.Date(paste0(sprintf("%02d", match(soy_contract8[i,1], codes)), "/", "14", "/", substr(soy_contract8[i, 2], 3,4)), "%m/%d/%y"), "%Y-%m-%d")
   soy_contract8[i, 6] <- as.Date(soy_contract8[i, 5]) - Sys.Date()
-  
 } 
 
+# Fetch Crude Quotes
+for (i in 1:12){
+ 
+  crude_contract12[i, 3] <- paste0("CL", crude_contract12[i,1], substr(crude_contract12[i, 2], 3,4), ".", "NYM")
+  crude_contract12[i, 4] <- as.numeric(getQuote(crude_contract12[i,3])[2])
+  crude_contract12[i, 5] <- format(as.Date(paste0(sprintf("%02d", match(crude_contract12[i,1], codes)), "/", "14", "/", substr(crude_contract12[i, 2], 3,4)), "%m/%d/%y"), "%Y-%m-%d")
+  crude_contract12[i, 6] <- as.Date(crude_contract12[i, 5]) - Sys.Date()
+}
 ```
 
 
 ```{r plotprep, echo=FALSE}
 # Prep for plotting
-
 colnames(corn_contract6) <- c("Month", "Year", "Contract", "Price", "Expiration", "DTE", "Label")
 colnames(wheat_contract6) <- c("Month", "Year", "Contract", "Price", "Expiration", "DTE", "Label")
 colnames(soy_contract8) <- c("Month", "Year", "Contract", "Price", "Expiration", "DTE", "Label")
+colnames(crude_contract12) <- c("Month", "Year", "Contract", "Price", "Expiration", "DTE", "Label")
 
 corn_contract6 <- as.data.frame(corn_contract6)
 corn_contract6$Contract <- substr(corn_contract6$Contract, 1,4)
@@ -109,7 +115,6 @@ wheat_contract6$Label <- paste(wheat_contract6$Contract, wheat_contract6$Price)
 w_DRet30 <- round(diff( wheat_contract6$Price)/diff(wheat_contract6$DTE)*30, digits = 2)
 w_label2 <- paste(wheat_contract6$Contract[-8], w_DRet30)
 
-
 soy_contract8 <- as.data.frame(soy_contract8)
 soy_contract8$Contract <- substr(soy_contract8$Contract, 1,4)
 soy_contract8$DTE <- as.numeric(as.character(soy_contract8$DTE))
@@ -118,23 +123,13 @@ soy_contract8$Label <- paste(soy_contract8$Contract, soy_contract8$Price)
 s_DRet30 <- round(diff( soy_contract8$Price)/diff(soy_contract8$DTE)*30, digits = 2)
 s_label2 <- paste(soy_contract8$Contract[-8], s_DRet30)
 
-# corn_ret_store <- as.data.frame(cbind(c_label2, C_DRet30, corn_contract6$DTE[-8]))
-# colnames(corn_ret_store) <- c("Label", "DRet30", "DTE" )
-# corn_ret_store$DTE <- as.numeric(as.character(corn_ret_store$DTE))
-# corn_ret_store$DRet30 <- as.numeric(as.character(corn_ret_store$DRet30))
-# corn_ret_store$DTE <- as.numeric(as.character(corn_ret_store$DTE))
-# 
-# wheat_ret_store <- as.data.frame(cbind(w_label2, w_DRet30, wheat_contract6$DTE[-8]))
-# colnames(wheat_ret_store) <- c("Label", "DRet30", "DTE")
-# wheat_ret_store$DTE <- as.numeric(as.character(wheat_ret_store$DTE))
-# wheat_ret_store$DRet30 <- as.numeric(as.character(wheat_ret_store$DRet30))
-# wheat_ret_store$DTE <- as.numeric(as.character(wheat_ret_store$DTE))
-# 
-# soy_ret_store <- as.data.frame(cbind(s_label2, s_DRet30, soy_contract8$DTE[-8]))
-# colnames(soy_ret_store) <- c("Label", "DRet30", "DTE")
-# soy_ret_store$DTE <- as.numeric(as.character(soy_ret_store$DTE))
-# soy_ret_store$DRet30 <- as.numeric(as.character(soy_ret_store$DRet30))
-# soy_ret_store$DTE <- as.numeric(as.character(soy_ret_store$DTE))
+crude_contract12 <- as.data.frame(crude_contract12)
+crude_contract12$Contract <- substr(crude_contract12$Contract, 1,5)
+crude_contract12$DTE <- as.numeric(as.character(crude_contract12$DTE))
+crude_contract12$Price <- as.numeric(as.character(crude_contract12$Price))
+crude_contract12$Label <- paste(crude_contract12$Contract, crude_contract12$Price)
+Crude_DRet30 <- as.numeric(as.character(round(diff( crude_contract12$Price)/diff(crude_contract12$DTE)*30, digits = 2)))
+crude_label2 <- paste(crude_contract12$Contract[-8], Crude_DRet30)
 ```
 
 
@@ -149,8 +144,6 @@ c <- ggplot(corn_contract6, aes(DTE, Price, color = Price)) +
       theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
       labs(x = "Days to Expiration", y = "Price of Corn in Cents per Bushel", title = "Corn Forward Curve")
 
-
-
 w <- ggplot(wheat_contract6, aes(DTE, Price, color = Price)) + 
       xlim(c(0, 450)) +
       geom_line(size = .75) +
@@ -158,8 +151,6 @@ w <- ggplot(wheat_contract6, aes(DTE, Price, color = Price)) +
       geom_point_interactive(aes(tooltip = Label), size = 2) +
       theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
       labs(x = "Days to Expiration", y = "Price of wheat in Cents per Bushel", title = "Chicago Wheat Forward Curve")
-
-
 
 s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) + 
       xlim(c(0, 450)) +
@@ -169,34 +160,13 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
       theme_bw(base_size = 12) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
       labs(x = "Days to Expiration", y = "Price of Soybean in Cents per Bushel", title = "Soybean Forward Curve")
 
-
-
-# c_ret <- ggplot(corn_ret_store, aes(DTE, DRet30,  color = DRet30)) + 
-#       xlim(c(0, 600)) +
-#       geom_line(size = .75) +
-#       expand_limits(y=c(min(corn_ret_store$DRet30)-10, max(corn_ret_store$DRet30)+10)) +
-#       geom_point_interactive(aes(tooltip = Label), size = 2) +
-#       theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
-#           labs(x = "Days to Expiration", y = "30 Day Return in Cents", title = "Corn 30 Day Return to Storage")
-# 
-# 
-# 
-# w_ret <- ggplot(wheat_ret_store, aes(DTE, DRet30, color = DRet30)) + 
-#       xlim(c(0, 600)) +
-#       geom_line(size = .75) +
-#       expand_limits(y=c(min(wheat_ret_store$DRet30)-10, max(wheat_ret_store$DRet30)+10)) +
-#       geom_point_interactive(aes(tooltip = Label), size = 2) +
-#       theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
-#           labs(x = "Days to Expiration", y = "30 Day Return in Cents", title = "Wheat 30 Day Return to Storage")
-# 
-# 
-# s_ret <- ggplot(soy_ret_store, aes(DTE, DRet30, color = DRet30)) + 
-#       xlim(c(0, 600)) +
-#       geom_line(size = .75) +
-#       expand_limits(y=c(min(soy_ret_store$DRet30)-10, max(soy_ret_store$DRet30)+10)) +
-#       geom_point_interactive(aes(tooltip = Label), size = 2) +
-#       theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
-#           labs(x = "Days to Expiration", y = "30 Day Return in Cents", title = "Soybean 30 Day Return to Storage")
+cl <- ggplot(crude_contract12, aes(DTE, Price, color = Price)) + 
+      xlim(c(0, 450)) +
+      geom_line(size = .75) +
+      expand_limits(y=c(min(crude_contract12$Price)-5, max(crude_contract12$Price)+5)) +
+      geom_point_interactive(aes(tooltip = Label), size = 2) +
+      theme_bw(base_size = 12) +  theme(plot.title = element_text(hjust = 0.5), legend.position="none") + 
+      labs(x = "Days to Expiration", y = "Price of Crude Oil in Dollars per Barrel", title = "WTI Crude Oil Forward Curve")
 
 ```
 
@@ -209,9 +179,6 @@ Column {data-width=200}
 
 Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/company/cbot.html) futures contracts; crude oil is a [New York Mercantile Exchange](http://www.cmegroup.com/company/nymex.html) futures contract. Price quotes are pulled from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted. 
 
-```{r}
-
-```
 
 Column {.tabset}
 -----------------------------------------------------------------------
@@ -224,11 +191,6 @@ ggiraphOutput("cornplot")
 output$cornplot <- renderggiraph({
     ggiraph(code = print(c), pointsize = 14, flexdashboard = TRUE)
   })
-  
-  # output$CornRetPlot <- renderggiraph({
-  #   ggiraph(code = print(c_ret))
-  # })
-  
 ```
 
 
@@ -240,11 +202,6 @@ ggiraphOutput("soybeanplot")
 output$soybeanplot <- renderggiraph({
     ggiraph(code = print(s), s, pointsize = 14, flexdashboard = TRUE)
   })
-  
-  # output$SoyRetPlot <- renderggiraph({
-  #   ggiraph(code = print(s_ret))
-  # })
-  # 
 ```
 
 
@@ -257,13 +214,21 @@ ggiraphOutput("wheatplot")
 output$wheatplot <-    renderggiraph({
     ggiraph(code = print(w), pointsize = 14, flexdashboard = TRUE)
   })
-  
-  # output$WheatRetPlot <- renderggiraph({
-  #   ggiraph(code = print(w_ret))
-  # })
-  # 
-  
-
 ```
 
+### WTI Crude Oil 
 
+
+```{r, echo = FALSE}
+ggiraphOutput("crudeplot")
+
+output$crudeplot <-    renderggiraph({
+    ggiraph(code = print(cl), pointsize = 14, flexdashboard = TRUE)
+  })
+```
+
+### Bitcoin
+
+[CME Bitcoin Futures](http://www.cmegroup.com/trading/bitcoin-futures.html)
+
+Coming soon! Check back after December 10, 2017.

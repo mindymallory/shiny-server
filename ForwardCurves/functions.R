@@ -76,3 +76,13 @@ soy_forward8 <- function(MonthCode, Year){
   contract8 <- corn_codes[contract:(contract+7),]
   return(contract8)
 }
+
+# 6 contracts corn and wheat is just about 1 year. 8 contracts soybeans is just about 1 year
+crude_forward12 <- function(MonthCode, Year){
+  c <- c('F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z')
+  y      <-  c(rep(Year, each = 12), rep(Year+1, each = 12))
+  crude_codes <- cbind(c, y)
+  contract <- match(MonthCode, crude_codes)
+  contract12 <- crude_codes[contract:(contract+11),]
+  return(contract12)
+}
