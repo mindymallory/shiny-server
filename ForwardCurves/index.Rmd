@@ -213,7 +213,7 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
 ## Corn Futures
 
 
-```{r, echo = FALSE, out.width = "50%"}
+```{r, echo = FALSE}
 renderggiraph({
     ggiraph(code = print(c))
   })
@@ -236,7 +236,7 @@ and here
 
 ```{r, echo = FALSE}
  
-ggiraphOutput("soybeanplot")
+ggiraphOutput("soybeanplot", width = "50%")
 
 output$soybeanplot <- renderggiraph({
     ggiraph(code = print(s), s, pointsize = 10)
