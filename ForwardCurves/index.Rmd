@@ -181,7 +181,7 @@ Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/c
 
 Copyright [Mindy Mallory](http://www.mindymallory.com) 2017
 
-More [Apps](http://apps.mindymallory.com/shiny/)
+More [Apps](http://apps.mindymallory.com/shiny/land/)
 
 
 Column {.tabset}
