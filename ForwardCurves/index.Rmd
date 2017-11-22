@@ -222,7 +222,21 @@ Column {.tabset}
 ```{r, echo = FALSE}
 ggiraphOutput("cornplot")
 output$cornplot <- renderggiraph({
-    ggiraph(code = print(c), pointsize = 12, width = .5, flexdashboard = TRUE, zoom_max = 1.5)
+    ggiraph(code = print(c), pointsize = 12, flexdashboard = TRUE)
+  })
+  
+  # output$CornRetPlot <- renderggiraph({
+  #   ggiraph(code = print(c_ret))
+  # })
+  
+```
+
+### Corn {.mobile}
+
+```{r, echo = FALSE}
+ggiraphOutput("cornplot")
+output$cornplot <- renderggiraph({
+    ggiraph(code = print(c), pointsize = 12)
   })
   
   # output$CornRetPlot <- renderggiraph({
@@ -232,6 +246,21 @@ output$cornplot <- renderggiraph({
 ```
 
 ### Soybeans
+
+```{r, echo = FALSE}
+ggiraphOutput("soybeanplot")
+
+output$soybeanplot <- renderggiraph({
+    ggiraph(code = print(s), s, pointsize = 10, flexdashboard = TRUE)
+  })
+  
+  # output$SoyRetPlot <- renderggiraph({
+  #   ggiraph(code = print(s_ret))
+  # })
+  # 
+```
+
+### Soybeans {.mobile}
 
 ```{r, echo = FALSE}
 ggiraphOutput("soybeanplot")
@@ -247,6 +276,24 @@ output$soybeanplot <- renderggiraph({
 ```
 
 ### Wheat 
+
+
+```{r, echo = FALSE}
+ggiraphOutput("wheatplot")
+
+output$wheatplot <-    renderggiraph({
+    ggiraph(code = print(w), pointsize = 10, flexdashboard = TRUE)
+  })
+  
+  # output$WheatRetPlot <- renderggiraph({
+  #   ggiraph(code = print(w_ret))
+  # })
+  # 
+  
+
+```
+
+### Wheat {.mobile}
 
 
 ```{r, echo = FALSE}
