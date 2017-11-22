@@ -210,14 +210,11 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
 
 
 
-
-
-
 ## Corn Futures
 
-\
-```{r, echo = FALSE}
-   renderggiraph({
+
+```{r, echo = FALSE, out.width = "50%"}
+renderggiraph({
     ggiraph(code = print(c))
   })
   
@@ -226,7 +223,7 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
   # })
   
 ```
-\
+
 some text here   
 
 and here   
@@ -236,9 +233,9 @@ and here
 
 ## Soybeans Futures
 
-\
+
 ```{r, echo = FALSE}
-renderggiraph({
+ renderggiraph({
     ggiraph(code = print(s), s, pointsize = 10)
   })
   
@@ -247,7 +244,7 @@ renderggiraph({
   # })
   # 
 ```
-\
+
 
 some text here   
 
@@ -258,7 +255,7 @@ and here
 
 ## Wheat Futures
 
-\
+
 ```{r, echo = FALSE}
    renderggiraph({
     ggiraph(code = print(w))
@@ -271,7 +268,7 @@ and here
   
 
 ```
-\
+
 some text here   
 
 and here   
