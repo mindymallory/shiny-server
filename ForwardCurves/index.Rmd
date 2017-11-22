@@ -230,7 +230,7 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
 
 ```{r, echo = FALSE}
 renderggiraph({
-    ggiraph(code = print(s),pointsize = 10,  width_svg = 5, height_svg = 5)
+    ggiraph(code = print(s), s, pointsize = 10)
   })
   
   # output$SoyRetPlot <- renderggiraph({
