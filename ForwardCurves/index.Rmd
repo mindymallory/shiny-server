@@ -1,24 +1,17 @@
 ---
 title: "Commodity Futures Forward Curves"
-runtime: shiny
 output: 
-  html_document: 
-    code_folding: none
-    theme: flatly
-    toc: yes
-    toc_float: yes
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
 ---
 
-
-
-`r Sys.Date()` 
-
-Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/company/cbot.html) futures contracts; crude oil is a [New York Mercantile Exchange](http://www.cmegroup.com/company/nymex.html) futures contract. Price quotes are pulled from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE , warning = FALSE, message = FALSE)
 
-
+library(flexdashboard)
 library(shiny)
 library(ggplot2)
 library(quantmod)
@@ -209,9 +202,22 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
 
 
 
+Column {data-width=200}
+-----------------------------------------------------------------------
 
-## Corn Futures
+### Introduction
 
+Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/company/cbot.html) futures contracts; crude oil is a [New York Mercantile Exchange](http://www.cmegroup.com/company/nymex.html) futures contract. Price quotes are pulled from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted. 
+
+```{r}
+
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+
+### Corn
 
 ```{r, echo = FALSE}
 renderggiraph({
@@ -224,19 +230,10 @@ renderggiraph({
   
 ```
 
-some text here   
-
-and here   
-
-and here  
-
-
-## Soybeans Futures
-
+### Soybeans
 
 ```{r, echo = FALSE}
- 
-ggiraphOutput("soybeanplot", width = "100%", height = "200px")
+ggiraphOutput("soybeanplot")
 
 output$soybeanplot <- renderggiraph({
     ggiraph(code = print(s), s, pointsize = 10)
@@ -248,15 +245,7 @@ output$soybeanplot <- renderggiraph({
   # 
 ```
 
-
-some text here   
-
-and here   
-
-and here  
-
-
-## Wheat Futures
+### Wheat 
 
 
 ```{r, echo = FALSE}
@@ -271,28 +260,3 @@ and here
   
 
 ```
-
-some text here   
-
-and here   
-
-and here  
-
-
-## Bitcoin Futures
-
-Coming soon! Check back December 10, 2017.
-
-## Contact
-
-mallorym at illinois dot edu
-
-Back to [MindyMallory.com](http://www.mindymallory.com)
-
-
-
-
-
-
-
-
