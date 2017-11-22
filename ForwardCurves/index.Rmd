@@ -220,7 +220,7 @@ Column {.tabset}
 ### Corn
 
 ```{r, echo = FALSE}
-ggiraphOutput("cornplot", width = "50%")
+ggiraphOutput("cornplot", width = "100%", height = "75%")
 output$cornplot <- renderggiraph({
     ggiraph(code = print(c), pointsize = 10)
   })
