@@ -25,21 +25,20 @@ Column
 
 ### 
 
-Current forward curves for corn, soybeans, wheat, and crude oil. 
+**Commodity Futures Forward Curves** 
 
-
-[![](forwardcurves.png)](http://apps.mindymallory.com/shiny/ForwardCurves/)
+```{r, echo = FALSE}
+img(src='http://apps.mindymallory.com/shiny/www/forwardcurves.PNG')
+```
 
 
 ### 
 
-Yesterdays’s US treasury yield curve versus snapshots of the curve in the previous three months. 
+**US Treasury Yield Curve** 
 
 ```{r, echo = FALSE}
 img(src='http://apps.mindymallory.com/shiny/www/treasyield.PNG')
 ```
-
-[![](www/treasyield.png)](http://apps.mindymallory.com/shiny/TreasYieldCurve/)
 
 Column 
 -----------------------------------------------------------------------
