@@ -226,6 +226,13 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
   
 ```
 
+some text here   
+
+and here   
+
+and here  
+
+
 ## Soybeans Futures
 
 ```{r, echo = FALSE}
@@ -238,6 +245,14 @@ renderggiraph({
   # })
   # 
 ```
+
+
+some text here   
+
+and here   
+
+and here  
+
 
 ## Wheat Futures
 
@@ -253,6 +268,13 @@ renderggiraph({
   
 
 ```
+
+some text here   
+
+and here   
+
+and here  
+
 
 ## Bitcoin Futures
 
