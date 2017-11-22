@@ -2,10 +2,9 @@
 title: "US Treasury Yield Curve"
 runtime: shiny
 output: 
-  html_document: 
-    code_folding: none
-    theme: flatly
-    toc: no
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
 ```{r setup, include=FALSE}
@@ -29,7 +28,7 @@ Year <- as.numeric(year(Today))
 
 ```
 
-Yesterdays's US treasury yield curve versus snapshots of the curve in the previous three months. 
+ 
 
 ```{r treas, echo=FALSE, warning=FALSE, message=FALSE}
 # For Treasury Yields
@@ -56,13 +55,35 @@ treas_plot <- ggplot(t, aes(x=Maturity, y=Yield, colour= Date, group = Date)) +
       theme_bw(base_size = 14) +  theme(plot.title = element_text(hjust = 0.5),  axis.text.x  = element_text(angle=45)) + 
               labs(x = "Maturities", y = "Yields", title = "US Treasury Yields")
 
-treas_plot
-
 ```
 
-US treasury yield data come from [www.treasury.gov](https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield)
+Column {data-width=200}
+-----------------------------------------------------------------------
 
-Back to [mindymallory.com](http://www.mindymallory.com)
+### Introduction
 
-Source code available at [github.com/mindymallory/shiny-server](https://github.com/mindymallory/shiny-server)
+Yesterdays's US treasury yield curve versus snapshots of the curve in the previous three months.
+
+US treasury yield data come from [www.treasury.gov](https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield)  
+
+Copyright [Mindy Mallory](http://www.mindymallory.com) 2017
+
+More [Apps](http://apps.mindymallory.com/)
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+
+### US Treasury Yields
+
+```{r, echo = FALSE}
+ggiraphOutput("treasplot")
+output$treasplot <- renderggiraph({
+    ggiraph(code = print(treas_plot), pointsize = 14, flexdashboard = TRUE)
+  })
+```
+
+
+
 
