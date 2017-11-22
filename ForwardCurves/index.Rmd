@@ -236,7 +236,7 @@ and here
 
 ```{r, echo = FALSE}
  
-ggiraphOutput("soybeanplot", width = "50%")
+ggiraphOutput("soybeanplot", width = "50%", height = "200px")
 
 output$soybeanplot <- renderggiraph({
     ggiraph(code = print(s), s, pointsize = 10)
