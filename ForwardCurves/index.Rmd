@@ -222,7 +222,7 @@ Column {.tabset}
 ```{r, echo = FALSE}
 ggiraphOutput("cornplot")
 output$cornplot <- renderggiraph({
-    ggiraph(code = print(c), pointsize = 12, flexdashboard = TRUE)
+    ggiraph(code = print(c), pointsize = 14, flexdashboard = TRUE)
   })
   
   # output$CornRetPlot <- renderggiraph({
@@ -238,7 +238,7 @@ output$cornplot <- renderggiraph({
 ggiraphOutput("soybeanplot")
 
 output$soybeanplot <- renderggiraph({
-    ggiraph(code = print(s), s, pointsize = 10, flexdashboard = TRUE)
+    ggiraph(code = print(s), s, pointsize = 14, flexdashboard = TRUE)
   })
   
   # output$SoyRetPlot <- renderggiraph({
@@ -255,7 +255,7 @@ output$soybeanplot <- renderggiraph({
 ggiraphOutput("wheatplot")
 
 output$wheatplot <-    renderggiraph({
-    ggiraph(code = print(w), pointsize = 10, flexdashboard = TRUE)
+    ggiraph(code = print(w), pointsize = 14, flexdashboard = TRUE)
   })
   
   # output$WheatRetPlot <- renderggiraph({
