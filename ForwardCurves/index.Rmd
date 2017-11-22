@@ -184,7 +184,7 @@ Copyright [Mindy Mallory](http://www.mindymallory.com) 2017
 More [Apps](http://apps.mindymallory.com/)
 
 
-Column 
+Column {.tabset}
 -----------------------------------------------------------------------
 
 
