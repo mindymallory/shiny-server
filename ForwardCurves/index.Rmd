@@ -231,19 +231,6 @@ output$cornplot <- renderggiraph({
   
 ```
 
-### Corn {.mobile}
-
-```{r, echo = FALSE}
-ggiraphOutput("cornplot")
-output$cornplot <- renderggiraph({
-    ggiraph(code = print(c), pointsize = 12)
-  })
-  
-  # output$CornRetPlot <- renderggiraph({
-  #   ggiraph(code = print(c_ret))
-  # })
-  
-```
 
 ### Soybeans
 
@@ -260,20 +247,6 @@ output$soybeanplot <- renderggiraph({
   # 
 ```
 
-### Soybeans {.mobile}
-
-```{r, echo = FALSE}
-ggiraphOutput("soybeanplot")
-
-output$soybeanplot <- renderggiraph({
-    ggiraph(code = print(s), s, pointsize = 10)
-  })
-  
-  # output$SoyRetPlot <- renderggiraph({
-  #   ggiraph(code = print(s_ret))
-  # })
-  # 
-```
 
 ### Wheat 
 
@@ -293,21 +266,4 @@ output$wheatplot <-    renderggiraph({
 
 ```
 
-### Wheat {.mobile}
-
-
-```{r, echo = FALSE}
-ggiraphOutput("wheatplot")
-
-output$wheatplot <-    renderggiraph({
-    ggiraph(code = print(w), pointsize = 10)
-  })
-  
-  # output$WheatRetPlot <- renderggiraph({
-  #   ggiraph(code = print(w_ret))
-  # })
-  # 
-  
-
-```
 
