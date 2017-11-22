@@ -39,7 +39,7 @@ Yesterdays’s US treasury yield curve versus snapshots of the curve in the prev
 img(src='treasyield.png')
 ```
 
-[![](treasyield.png)](http://apps.mindymallory.com/shiny/TreasYieldCurve/)
+[![](www/treasyield.png)](http://apps.mindymallory.com/shiny/TreasYieldCurve/)
 
 Column 
 -----------------------------------------------------------------------
