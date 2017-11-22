@@ -4,6 +4,7 @@ output:
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
+    social: ["twitter", "facebook", "menu"]
 runtime: shiny
 ---
 
@@ -27,9 +28,6 @@ Column
 
 Current forward curves for corn, soybeans, wheat, and crude oil. 
 
-```{r, echo=FALSE}
-tags$img(src='forwardcurves.png')
-```
 
 [![](forwardcurves.png)](http://apps.mindymallory.com/shiny/ForwardCurves/)
 
