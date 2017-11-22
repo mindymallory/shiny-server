@@ -220,8 +220,9 @@ Column {.tabset}
 ### Corn
 
 ```{r, echo = FALSE}
-renderggiraph({
-    ggiraph(code = print(c))
+ggiraphOutput("cornplot", width = "50%")
+output$cornplot <- renderggiraph({
+    ggiraph(code = print(c), pointsize = 10)
   })
   
   # output$CornRetPlot <- renderggiraph({
@@ -249,8 +250,10 @@ output$soybeanplot <- renderggiraph({
 
 
 ```{r, echo = FALSE}
-   renderggiraph({
-    ggiraph(code = print(w))
+ggiraphOutput("wheatplot")
+
+output$wheatplot <-    renderggiraph({
+    ggiraph(code = print(w), pointsize = 10)
   })
   
   # output$WheatRetPlot <- renderggiraph({
