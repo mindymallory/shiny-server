@@ -193,7 +193,7 @@ Column {.tabset}
 ```{r, echo = FALSE}
 ggiraphOutput("cornplot")
 output$cornplot <- renderggiraph({
-    ggiraph(code = print(c), pointsize = 14)
+    ggiraph(code = print(c), pointsize = 14, flexdashboard = TRUE)
   })
 ```
 
