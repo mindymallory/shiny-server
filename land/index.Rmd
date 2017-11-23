@@ -31,7 +31,7 @@ Column
   <img src="http://apps.mindymallory.com/shiny/www/forwardcurves.PNG" alt="Treasury Yield Curve" style='height: 100%; width: 100%; object-fit: contain'/>
 </a>
 
-### 
+### US Treasury Yield Curve
 
 **US Treasury Yield Curve** 
 
