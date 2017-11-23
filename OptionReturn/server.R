@@ -55,6 +55,7 @@ shinyServer(function(input, output) {
                        stat_function(fun = zero, colour="black") +
                        scale_colour_manual(values=palette) +
                        xlim(0.90*K, 1.1*K) +
+                       theme_bw() +
                        ylim(0, 3*c)
      } else{ 
      s   = getQuote(input$ticker)
@@ -99,6 +100,7 @@ shinyServer(function(input, output) {
        stat_function(fun = Pay, colour="black", size=1) +
        stat_function(fun = zero, colour="black") +
        scale_colour_manual(values=palette) +
+       theme_bw() +
        xlim(0.90*K, 1.1*K) +
        ylim(0, 3*p)
      }                   
