@@ -23,18 +23,15 @@ Back to [MindyMallory.com](http://mindymallory.com)
 Column 
 -----------------------------------------------------------------------
 
-### 
+### Commodity Futures Forward Curves
 
-**Commodity Futures Forward Curves** 
+
 
 <a href="http://apps.mindymallory.com/shiny/ForwardCurves/">
-  <img src="http://apps.mindymallory.com/shiny/www/forwardcurves.PNG" alt="Treasury Yield Curve" style='height: 100%; width: 100%; object-fit: contain'/>
+  <img src="http://apps.mindymallory.com/shiny/www/forwardcurves.PNG" alt="Commodity Futures Forward Curves" style='height: 100%; width: 100%; object-fit: contain'/>
 </a>
 
 ### US Treasury Yield Curve
-
-**US Treasury Yield Curve** 
-
 
 <a href="http://apps.mindymallory.com/shiny/TreasYieldCurve/">
   <img src="http://apps.mindymallory.com/shiny/www/treasyield.PNG" alt="Treasury Yield Curve" style='height: 100%; width: 100%; object-fit: contain'/>
@@ -43,8 +40,11 @@ Column
 Column 
 -----------------------------------------------------------------------
 
-###
+### Leverage with Options
 
+<a href="http://apps.mindymallory.com/shiny/OptionReturns/">
+  <img src="http://apps.mindymallory.com/shiny/www/OptionReturn.PNG" alt="Option Returns" style='height: 100%; width: 100%; object-fit: contain'/>
+</a>
 
 ###
 
