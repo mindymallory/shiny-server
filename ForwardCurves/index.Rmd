@@ -134,7 +134,7 @@ crude_label2 <- paste(crude_contract12$Contract[-8], Crude_DRet30)
 
 
 
-```{r ggplots, echo=FALSE}
+```{r ggplots, echo=FALSE, fig.width= 5, fig.height= 2}
 # Define the ggplots
 c <- ggplot(corn_contract6, aes(DTE, Price, color = Price)) + 
       xlim(c(0, 450)) +
@@ -191,9 +191,9 @@ Column {.tabset}
 ### Corn
 
 ```{r, echo = FALSE}
-ggiraphOutput("cornplot", width = "100%")
+ggiraphOutput("cornplot")
 output$cornplot <- renderggiraph({
-    ggiraph(code = print(c), pointsize = 14, flexdashboard = TRUE)
+    ggiraph(code = print(c), pointsize = 14)
   })
 ```
 
@@ -221,6 +221,8 @@ output$wheatplot <-    renderggiraph({
   })
 ```
 
+
+
 ### WTI Crude Oil 
 
 
@@ -237,3 +239,5 @@ output$crudeplot <-    renderggiraph({
 [CME Bitcoin Futures](http://www.cmegroup.com/trading/bitcoin-futures.html)
 
 Coming soon! Check back after December 10, 2017.
+
+### 
