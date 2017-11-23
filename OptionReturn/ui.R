@@ -48,7 +48,7 @@ shinyUI(fluidPage(
                   value = 2, step=0.1),
       
       sliderInput("return",
-                  "Target security price return over horizon on which option is held:",
+                  "Expected stock price return over horizon on which option is held:",
                   min = -5,
                   max = 5, 
                   value = 1, step = 0.1),
@@ -64,7 +64,7 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       plotOutput("Plot"),
-      h4("Illustrating the ability to leverage with Options"),
+      h4("Illustrating leverage with Options"),
       tableOutput("view"),
       
       helpText("The table above shows that whatever your expected return in the underlying is, the return on the option price
