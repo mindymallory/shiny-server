@@ -43,7 +43,7 @@ Column
 ### Leverage with Options
 
 <a href="http://apps.mindymallory.com/shiny/OptionReturns/">
-  <img src="http://apps.mindymallory.com/shiny/www/OptionReturn.PNG" alt="Option Returns" style='height: 100%; width: 100%; object-fit: contain'/>
+  <img src="http://apps.mindymallory.com/shiny/www/OptionReturns.PNG" alt="Option Returns" style='height: 100%; width: 100%; object-fit: contain'/>
 </a>
 
 ###
