@@ -17,9 +17,9 @@ month_symbol <- function(monthint){
   # 
   # ArgumentCheck::finishArgCheck(Check)
   
-  codes <- c('F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z')
+  codes <- c('F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z', 'F', 'G', 'H')
   
-  code <- codes[monthint + 1]
+  code <- codes[monthint%%12 +1]
   return(code)
   
 }

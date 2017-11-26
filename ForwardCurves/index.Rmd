@@ -41,6 +41,8 @@ Year <- as.numeric(year(Today))
 MonthCode <- month_symbol(mo)
 Cm <- get_nearby_corn(MonthCode, Year)
 Sm <- get_nearby_soy(MonthCode, Year)
+if (mo>10) YearCL <- Year +1  else YearCL <- Year
+CLm <- list(month_symbol(c(mo + 1)), YearCL)
 
 corn_contract6 <- corn_forward6(Cm[[1]], Cm[[2]])
 corn_contract6 <- cbind(corn_contract6, "", "","","", "")
@@ -50,7 +52,7 @@ wheat_contract6 <- cbind(wheat_contract6, "", "","","", "")
 soy_contract8 <- soy_forward8(Sm[[1]], Sm[[2]])
 soy_contract8 <- cbind(soy_contract8, "", "","","", "")
 
-crude_contract12 <- crude_forward12(MonthCode, Year)
+crude_contract12 <- crude_forward12(CLm[[1]], CLm[[2]])
 crude_contract12 <- cbind(crude_contract12, "", "","","", "")
 codes <- c('F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z')
 
