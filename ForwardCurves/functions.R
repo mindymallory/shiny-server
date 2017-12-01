@@ -25,7 +25,7 @@ month_symbol <- function(monthint){
 }
 
 
-get_nearby_corn <- function(MonthCode, Year){
+get_nearby_corn <- function(MonthCode){
   codes <- c('F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z', 'F', 'G', 'H')
   corn_codes <- c('H', 'K','N', 'U', 'Z', 'H')
   
@@ -35,9 +35,9 @@ get_nearby_corn <- function(MonthCode, Year){
     MonthCode <- codes[II]
   }
   
-  if (II > 13) Year <- Year + 1
   
-  Cm <- list(MonthCode, Year)
+  
+  Cm <- list(MonthCode)
   return(Cm)
   
 }
@@ -52,7 +52,7 @@ corn_forward6 <- function(MonthCode, Year){
   return(contract6)
 }
 
-get_nearby_soy <- function(MonthCode, Year){
+get_nearby_soy <- function(MonthCode){
   codes <- c('F', 'G', 'H', 'J', 'K', 'M', 'N', 'Q', 'U', 'V', 'X', 'Z', 'F', 'G', 'H')
   soy_codes <- c('F', 'H', 'K','N', 'Q', 'U', 'X')
   
@@ -61,10 +61,7 @@ get_nearby_soy <- function(MonthCode, Year){
     II <- match(MonthCode,codes)+1
     MonthCode <- codes[II]
   }
-  
-  if (II > 12) Year <- Year + 1
-  
-  Sm <- list(MonthCode, Year)
+  Sm <- list(MonthCode)
   return(Sm)
 }
 

@@ -39,10 +39,16 @@ mo <- as.integer(month(Today))
 Year <- as.numeric(year(Today))
 
 MonthCode <- month_symbol(mo)
-Cm <- get_nearby_corn(MonthCode, Year)
-Sm <- get_nearby_soy(MonthCode, Year)
+Cm <- get_nearby_corn(MonthCode)
+Sm <- get_nearby_soy(MonthCode)
 if (mo>10) YearCL <- Year +1  else YearCL <- Year
+if (mo>11) YearC  <- Year +1 else YearC <- Year
+if (mo>10) YearS  <- Year +1 else YearS <- Year
+if (mo>11) YearB  <- Year +1 else YearB <- Year
 CLm <- list(month_symbol(c(mo + 1)), YearCL)
+Cm[[2]] <- YearC
+Sm[[2]] <- YearS
+#Bm[[2]] <- YearB
 
 corn_contract6 <- corn_forward6(Cm[[1]], Cm[[2]])
 corn_contract6 <- cbind(corn_contract6, "", "","","", "")
