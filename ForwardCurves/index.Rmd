@@ -21,6 +21,10 @@ library(lubridate)
 library(ustyc) 
 library(officer)
 library(ggiraph)
+library(jsonlite)
+library(knitr)
+library(readxl)
+library(httr)
 
 ```
 
@@ -145,7 +149,7 @@ crude_label2 <- paste(crude_contract12$Contract[-8], Crude_DRet30)
 ```{r ggplots, echo=FALSE, fig.width= 5, fig.height= 2}
 # Define the ggplots
 c <- ggplot(corn_contract6, aes(DTE, Price, color = Price)) + 
-      xlim(c(0, 450)) +
+      xlim(c(0, 500)) +
       geom_line(size = .75) +
       expand_limits(y=c(min(corn_contract6$Price)-50, max(corn_contract6$Price)+50)) +
       geom_point_interactive(aes(tooltip = Label), size = 2) +
@@ -153,7 +157,7 @@ c <- ggplot(corn_contract6, aes(DTE, Price, color = Price)) +
       labs(x = "Days to Expiration", y = "Price of Corn in Cents per Bushel", title = "Corn Forward Curve")
 
 w <- ggplot(wheat_contract6, aes(DTE, Price, color = Price)) + 
-      xlim(c(0, 450)) +
+      xlim(c(0, 500)) +
       geom_line(size = .75) +
       expand_limits(y=c(min(wheat_contract6$Price)-50, max(wheat_contract6$Price)+50)) +
       geom_point_interactive(aes(tooltip = Label), size = 2) +
@@ -161,7 +165,7 @@ w <- ggplot(wheat_contract6, aes(DTE, Price, color = Price)) +
       labs(x = "Days to Expiration", y = "Price of wheat in Cents per Bushel", title = "Chicago Wheat Forward Curve")
 
 s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) + 
-      xlim(c(0, 450)) +
+      xlim(c(0, 500)) +
       geom_line(size = .75) +
       expand_limits(y=c(min(soy_contract8$Price)-50, max(soy_contract8$Price)+50)) +
       geom_point_interactive(aes(tooltip = Label), size = 2) +
@@ -169,7 +173,7 @@ s <- ggplot(soy_contract8, aes(DTE, Price, color = Price)) +
       labs(x = "Days to Expiration", y = "Price of Soybean in Cents per Bushel", title = "Soybean Forward Curve")
 
 cl <- ggplot(crude_contract12, aes(DTE, Price, color = Price)) + 
-      xlim(c(0, 450)) +
+      xlim(c(0, 500)) +
       geom_line(size = .75) +
       expand_limits(y=c(min(crude_contract12$Price)-5, max(crude_contract12$Price)+5)) +
       geom_point_interactive(aes(tooltip = Label), size = 2) +
@@ -185,11 +189,15 @@ Column {data-width=200}
 
 ### Introduction
 
-Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/company/cbot.html) futures contracts; crude oil is a [New York Mercantile Exchange](http://www.cmegroup.com/company/nymex.html) futures contract. Price quotes are pulled from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted.  
+Corn, soybeans, and wheat are [Chicago Board of Trade](http://www.cmegroup.com/company/cbot.html) futures contracts; crude oil is a [New York Mercantile Exchange](http://www.cmegroup.com/company/nymex.html) futures contract. Price quotes are pulled from [Yahoo Finance](https://finance.yahoo.com/). Hover your mouse over the lines to reveal the contracts plotted.
+
+This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. [FRED terms of use](https://research.stlouisfed.org/docs/api/terms_of_use.html).
 
 Copyright [Mindy Mallory](http://www.mindymallory.com) 2017
 
-More [Apps](http://apps.mindymallory.com/shiny/land/)
+More [Apps](http://blog.mindymallory.com/projects/)
+
+
 
 
 Column {.tabset}
@@ -199,14 +207,73 @@ Column {.tabset}
 ### Corn
 
 ```{r, echo = FALSE}
+kable(Today, align = 'l')
+
+```
+
+
+```{r, echo = FALSE}
 ggiraphOutput("cornplot")
 output$cornplot <- renderggiraph({
     ggiraph(code = print(c), pointsize = 14, flexdashboard = TRUE)
   })
+
 ```
 
 
+
+
+```{r, echo = FALSE}
+# Fetch LIBOR from FRED
+FREDLIBOR1            <- "https://api.stlouisfed.org/fred/series/observations?series_id=USD3MTD156N&observation_start="
+
+FREDLIBOR2            <- "&observation_end="
+
+FREDLIBOR3            <- "&api_key=4c327bd91e4b6556ae5b1f13977f66b3&file_type=json"
+FREDLIBOR             <- fromJSON(paste0(FREDLIBOR1, as.character(Today-10), FREDLIBOR2, as.character(Today), FREDLIBOR3))
+LIBOR                 <- as.numeric(FREDLIBOR$observations$value[length(FREDLIBOR$observations$value)])
+
+FinFullCarry <- diff(corn_contract6$DTE)*((LIBOR+2)/(100*360)*corn_contract6$Price[1:(length(corn_contract6$Price)-1)] + 0.165)
+
+PercentFinFUllCarry <- t(as.data.frame(round(diff(corn_contract6$Price)/FinFullCarry*100, 2)))
+
+PercentFinFUllCarry <- rbind(round(diff(corn_contract6$Price)),PercentFinFUllCarry, floor(diff(corn_contract6$DTE)))
+
+colnames(PercentFinFUllCarry) <- c(paste0(corn_contract6$Contract[2], "-", corn_contract6$Contract[1]), paste0(corn_contract6$Contract[3], "-", corn_contract6$Contract[2]), paste0(corn_contract6$Contract[4], "-", corn_contract6$Contract[3]), paste0(corn_contract6$Contract[5], "-", corn_contract6$Contract[4]), paste0(corn_contract6$Contract[6], "-", corn_contract6$Contract[5]))
+
+rownames(PercentFinFUllCarry) <- c("Calendar Spread (cents)", "Percent of Financial Full Carry", "Days between Expirations")
+
+kable(PercentFinFUllCarry, caption = "Calendar Spread Percent of Financial Full Carry")
+
+kable(as.data.frame(LIBOR), align = 'l')
+```
+
+#### Calendar Spreads in Futures Markets
+
+The difference in price between one futures contract expiration and the price of another futures contract expiration is called a calendar spread. For example, the calendar spread written below is the difference between the price of the May expiration and the price of the March expiration. It gives a sense of what kind of incentive to store the market is providing to stockholders of the commodity. 
+
+$$Calendar \text{  } Spread  = F^{May} - F^{March}$$ 
+
+Finacial full carry is the spread between the deferred futures contract and the nearby contract that exactly compensates for interest costs and physical storage costs.
+
+$$Financial \text{ } Full \text{ } Carry = ndays(\frac{i}{360}*F + P)$$
+
+where $ndays =$ the number of days between the first delivery day in the nearby contract and the first delivery day in the deferred contract. $i =$ the three month LIBOR interest rate + 200 basis points, $F =$ futures price, and $P =$ the current premium charge on shipping certificates. Here we use 0.165, the maximum charge allowed by the CME Group to be charged on shipping certificates that can be delivered into the corn futures contract.  
+
+The calendar spread as a Percent of full financial carry is a metric that is widely followed because it gives similar information as the shape of the forward curve in an easier metric to compare across time. More about commodity prices through time [here](http://mindymallory.com/PriceAnalysis/prices-over-space-and-time.html#financial-full-carry). More about financial full carry [here](https://www.cmegroup.com/trading/agricultural/files/vsr-whitepaper.pdf).   
+
+$$\text{Percent of Full Carry } = 100*\frac{Futures \text{ } Calendar \text{ } Spread}{Full \text{ } Financial\text{ } Carry}$$
+
+
+
+
 ### Soybeans
+
+```{r, echo = FALSE}
+kable(Today, align = 'l')
+
+```
+
 
 ```{r, echo = FALSE}
 ggiraphOutput("soybeanplot")
@@ -218,7 +285,45 @@ output$soybeanplot <- renderggiraph({
 
 
 
+
+```{r, echo = FALSE}
+
+FinFullCarry <- diff(soy_contract8$DTE)*((LIBOR+2)/(100*360)*soy_contract8$Price[1:(length(soy_contract8$Price)-1)] + 0.165)
+
+PercentFinFUllCarry <- t(as.data.frame(round(diff(soy_contract8$Price)/FinFullCarry*100, 2)))
+
+PercentFinFUllCarry <- rbind(round(diff(soy_contract8$Price)),PercentFinFUllCarry, floor(diff(soy_contract8$DTE)))
+
+colnames(PercentFinFUllCarry) <- c(paste0(soy_contract8$Contract[2], "-", soy_contract8$Contract[1]), paste0(soy_contract8$Contract[3], "-", soy_contract8$Contract[2]), paste0(soy_contract8$Contract[4], "-", soy_contract8$Contract[3]), paste0(soy_contract8$Contract[5], "-", soy_contract8$Contract[4]), paste0(soy_contract8$Contract[6], "-", soy_contract8$Contract[5]), paste0(soy_contract8$Contract[7], "-", soy_contract8$Contract[6]), paste0(soy_contract8$Contract[8], "-", soy_contract8$Contract[7]))
+
+rownames(PercentFinFUllCarry) <- c("Calendar Spread (cents)", "Percent of Financial Full Carry", "Days between Expirations")
+
+kable(PercentFinFUllCarry, caption = "Calendar Spread Percent of Financial Full Carry")
+
+kable(as.data.frame(LIBOR), align = 'l')
+```
+
+#### Calendar Spreads in Futures Markets
+
+The difference in price between one futures contract expiration and the price of another futures contract expiration is called a calendar spread. For example, the calendar spread written below is the difference between the price of the May expiration and the price of the March expiration. It gives a sense of what kind of incentive to store the market is providing to stockholders of the commodity. 
+
+$$Calendar \text{  } Spread  = F^{May} - F^{March}$$ 
+
+Finacial full carry is the spread between the deferred futures contract and the nearby contract that exactly compensates for interest costs and physical storage costs.
+
+$$Financial \text{ } Full \text{ } Carry = ndays(\frac{i}{360}*F + P)$$
+
+where $ndays =$ the number of days between the first delivery day in the nearby contract and the first delivery day in the deferred contract. $i =$ the three month LIBOR interest rate + 200 basis points, $F =$ futures price, and $P =$ the current premium charge on shipping certificates. Here we use 0.165, the maximum charge allowed by the CME Group to be charged on shipping certificates that can be delivered into the corn futures contract.  
+
+The calendar spread as a Percent of full financial carry is a metric that is widely followed because it gives similar information as the shape of the forward curve in an easier metric to compare across time. More about commodity prices through time [here](http://mindymallory.com/PriceAnalysis/prices-over-space-and-time.html#financial-full-carry). More about financial full carry [here](https://www.cmegroup.com/trading/agricultural/files/vsr-whitepaper.pdf).   
+
+$$\text{Percent of Full Carry } = 100*\frac{Futures \text{ } Calendar \text{ } Spread}{Full \text{ } Financial\text{ } Carry}$$
+
+
+
 ### Wheat 
+
+`r Today`
 
 
 ```{r, echo = FALSE}
@@ -229,6 +334,50 @@ output$wheatplot <-    renderggiraph({
   })
 ```
 
+```{r, echo = FALSE, message=FALSE, warning = FALSE}
+invisible(GET("http://www.cmegroup.com/trading/agricultural/files/vsr-calculator.xls", write_disk(tf <- tempfile(fileext = ".xls"))))
+df <- read_excel(tf, sheet = 1, range = "D8:D8")
+vsr <- colnames(df)
+vsr <- as.numeric(substr(vsr, 2, 8))*100
+
+```
+
+
+
+```{r, echo = FALSE}
+FinFullCarry <- diff(wheat_contract6$DTE)*((LIBOR+2)/(100*360)*wheat_contract6$Price[1:(length(wheat_contract6$Price)-1)] + vsr)
+
+PercentFinFUllCarry <- t(as.data.frame(round(diff(wheat_contract6$Price)/FinFullCarry*100, 2)))
+
+PercentFinFUllCarry <- rbind(round(diff(wheat_contract6$Price)),PercentFinFUllCarry, floor(diff(wheat_contract6$DTE)))
+
+colnames(PercentFinFUllCarry) <- c(paste0(wheat_contract6$Contract[2], "-", wheat_contract6$Contract[1]), paste0(wheat_contract6$Contract[3], "-", wheat_contract6$Contract[2]), paste0(wheat_contract6$Contract[4], "-", wheat_contract6$Contract[3]), paste0(wheat_contract6$Contract[5], "-", wheat_contract6$Contract[4]), paste0(wheat_contract6$Contract[6], "-", wheat_contract6$Contract[5]))
+
+rownames(PercentFinFUllCarry) <- c("Calendar Spread (cents)", "Percent of Financial Full Carry", "Days between Expirations")
+
+kable(PercentFinFUllCarry, caption = "Calendar Spread Percent of Financial Full Carry")
+
+kable(as.data.frame(vsr), align = 'l')
+
+kable(as.data.frame(LIBOR), align = 'l')
+
+```
+
+#### Calendar Spreads in Futures Markets
+
+The difference in price between one futures contract expiration and the price of another futures contract expiration is called a calendar spread. For example, the calendar spread written below is the difference between the price of the May expiration and the price of the March expiration. It gives a sense of what kind of incentive to store the market is providing to stockholders of the commodity. 
+
+$$Calendar \text{  } Spread  = F^{May} - F^{March}$$ 
+
+Finacial full carry is the spread between the deferred futures contract and the nearby contract that exactly compensates for interest costs and physical storage costs.
+
+$$Financial \text{ } Full \text{ } Carry = ndays(\frac{i}{360}*F + P)$$
+
+where $ndays =$ the number of days between the first delivery day in the nearby contract and the first delivery day in the deferred contract. $i =$ the three month LIBOR interest rate + 200 basis points, $F =$ futures price, and $P =$ the current premium charge on shipping certificates. Here we use `r vsr`, the maximum charge allowed by the CME Group to be charged on shipping certificates that can be delivered into the wheat futures contract.  
+
+The calendar spread as a Percent of full financial carry is a metric that is widely followed because it gives similar information as the shape of the forward curve in an easier metric to compare across time. More about commodity prices through time [here](http://mindymallory.com/PriceAnalysis/prices-over-space-and-time.html#financial-full-carry). More about financial full carry [here](https://www.cmegroup.com/trading/agricultural/files/vsr-whitepaper.pdf).   
+
+$$\text{Percent of Full Carry } = 100*\frac{Futures \text{ } Calendar \text{ } Spread}{Full \text{ } Financial\text{ } Carry}$$
 
 
 ### WTI Crude Oil 
